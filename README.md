@@ -1,2 +1,2 @@
-# html5-music
+# html5music
 a  simple HTML5 music project 
