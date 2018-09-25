@@ -8,16 +8,17 @@ var audioControl = new root.AudioControl();
 // 初始化加载歌曲列表中的第几首歌
 var initSongIndex = 0;
 
-console.log(audioControl);
-
-function bindEvent() {
+function bindClick() {
     $scope.on('play:change', function (event,index) {
         audioControl.getAudio(songList[index].audio);
         $scope.append(audioControl.audio);
         if (audioControl.status === 'play') {
             audioControl.play();
+            root.processor.start();
         }
+        root.processor.renderAllTime(songList[index].duration)
         root.render(songList[index]);
+        root.processor.updata(0);
     });
     $scope.on('click', '.btn-prev', function () {
         $scope.trigger('play:change', controlManager.prev() );
@@ -28,10 +29,12 @@ function bindEvent() {
     $scope.on('click', '.btn-play', function () {
         if (audioControl.status === 'play') {
             audioControl.pause();
+            root.processor.stop();
         } else {
             audioControl.play();
+            root.processor.start();
         }
-        $(this).toggleClass('pause');
+        $(this).toggleClass('playing');
     });
 
     $scope.on('click', '.btn-like', function () {
@@ -39,9 +42,10 @@ function bindEvent() {
     });
 
     $scope.on('click', '.btn-list', function () {
-
+        root.playList.show(controlManager);
     });
 }
+
 
 function getData(url) {
     $.ajax({
@@ -50,7 +54,8 @@ function getData(url) {
         success: function (data) {
             songList = data;
             controlManager = new root.ControlManager(initSongIndex, data.length);
-            bindEvent();
+            bindClick();
+            root.playList.renderList(songList);
             $scope.trigger('play:change', initSongIndex);
         },
         error: function (error) {

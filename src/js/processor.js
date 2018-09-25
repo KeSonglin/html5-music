@@ -22,14 +22,14 @@
         lastPercent = 0;
         curDuration = duration;
         var allTime = formatTime(duration);
-        $scope.find(".all-time").html(allTime);
+        $scope.find(".total-time").html(allTime);
     }
     function updata(precent){
         var curTime = precent * curDuration;
         curTime = formatTime(curTime);
         $scope.find(".cur-time").html(curTime);
         var percentage = (precent - 1) * 100 + "%";
-        $scope.find(".pro-top").css({
+        $scope.find(".progress-top").css({
             transform : "translateX("+percentage+")"
         })
     }
@@ -45,7 +45,7 @@
                 updata(precent);
             }else{
                 cancelAnimationFrame(frameId);
-                $scope.find(".next-btn").trigger("click");
+                $scope.find(".btn-next").trigger("click");
             }
            
         }

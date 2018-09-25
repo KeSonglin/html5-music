@@ -1,10 +1,10 @@
 (function($,root){
     var $scope = $(document.body);
     var control;
-    var $playList = $("<div class = 'play-list'>"+
-        "<div class='play-header'>播放列表</div>" + 
-        "<ul class = 'list-wrapper'></ul>" +
-        "<div class='close-btn'>关闭</div>"+
+    var $playList = $("<div class = 'play-list'>" +
+        "<div class='list-header'>播放列表</div>" + 
+        "<ul class='list-wrapper'></ul>" +
+        "<div class='btn-close'>关闭</div>" +
     "</div>") 
     //渲染我们的播放列表dom
     function renderList(songList){
@@ -22,8 +22,7 @@
         signSong(control.index);
     }
     function bindEvent(){
-        $playList.on("click",".close-btn",function(){
-
+        $playList.on("click",".btn-close",function(){
             $playList.removeClass("show")
         })
         $playList.find("li").on("click",function(){
@@ -31,7 +30,7 @@
             signSong(index);
             control.index = index;
             $scope.trigger("play:change",[index,true]);
-            $scope.find(".play-btn").addClass("playing");
+            $scope.find(".btn-play").addClass("playing");
             setTimeout(function(){
                 $playList.removeClass("show")
             }, 200);
